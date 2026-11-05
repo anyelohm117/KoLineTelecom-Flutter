@@ -18,8 +18,29 @@ Registro de procedencia, consultas y comprobaciones. Cada integrante añade sus 
 - Cambio pequeño en código: el aviso de función pendiente deja de afirmar que se necesita backend para implementar la Etapa 1 local.
 - Documentación: se corrige el estado del README y se incorpora orientación. La redacción de la documentación final sigue pendiente del equipo según las reglas del docente.
 - Verificación: revisión de archivos y configuración, comparación con el ZIP y lectura del repositorio tras publicar. Sin Flutter disponible en el entorno; no se declara compilación, análisis ni prueba en dispositivo.
-- Responsable de la solicitud: Anyelo. Preparación asistida por ChatGPT; no se acredita como trabajo de las compañeras.
+
 
 ## Próximas entradas
 
 Añadir una entrada por uso con fecha real, integrante, herramienta, consulta, finalidad, resultado utilizado, adaptación propia y prueba ejecutada. Explicar también cuando una sugerencia se descarta. No marcar pruebas o revisiones que todavía no ocurrieron.
+
+
+## Integración del perfil y onboarding — Anyelo
+
+### Cambios realizados
+Integré el trabajo inicial de Deyla con la aplicación principal:
+bienvenida, perfil, acceso y panel. Añadí la edición del perfil,
+el saludo personalizado y ajustes visuales con el estilo de KoLine.
+
+### Apoyo recibido
+ChatGPT proporcionó código parcial de integración
+y correcciones. Revisé y ejecuté los cambios en mi computadora.
+
+### Comprobación
+- flutter analyze terminó sin errores.
+- Se comprobó el recorrido de bienvenida a perfil, acceso y panel.
+- La edición del perfil actualiza el saludo.
+- El registro y cambio de estado de tickets siguen funcionando.
+
+### Limitación
+El perfil y los tickets se guardan en memoria durante la sesión.
