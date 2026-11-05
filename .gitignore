@@ -1,0 +1,35 @@
+# Flutter y Dart
+.dart_tool/
+.packages
+.pub/
+.pub-cache/
+build/
+coverage/
+.flutter-plugins
+.flutter-plugins-dependencies
+**/doc/api/
+app.*.symbols
+app.*.map.json
+# Configuración local
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+*.log
+# Android: archivos de máquina, compilación y firma
+android/.gradle/
+android/captures/
+android/local.properties
+android/key.properties
+android/**/GeneratedPluginRegistrant.java
+*.jks
+*.keystore
+# Otras plataformas y archivos generados
+**/Flutter/ephemeral/
+**/flutter/ephemeral/
+# Credenciales y secretos
+.env
+.env.*
+!.env.example
+# pubspec.lock se versiona: es una aplicación, no un paquete.

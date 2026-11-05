@@ -6,11 +6,13 @@ La propuesta parte del [proyecto original en PHP](https://github.com/anyelohm117
 
 ## Estado del proyecto
 
-**Etapa actual: beta de interfaces.**
+**Etapa actual: beta incorporada; MVP local pendiente de desarrollo.**
 
-La beta se encuentra en el entorno local de desarrollo y está pendiente de incorporarse a este repositorio. Por ahora, el repositorio contiene la documentación inicial; **todavía no es posible ejecutar la aplicación clonándolo**.
+El código de KoLineTelecom_Flutter_Demo.zip ya está incorporado en la raíz (`lib/` y `pubspec.yaml`), con entrada web y archivos de colaboración. La beta concentra todavía sus pantallas en `lib/main.dart`; su separación es una tarea pendiente.
 
-El alcance inicial corresponde a un prototipo visual navegable. La autenticación real, la persistencia de datos y la integración con el backend se consideran trabajo pendiente.
+Es un prototipo visual: la búsqueda y los formularios de registro/configuración no guardan datos; faltan detalle de tickets, Provider, Model, Repository, onboarding y assets propios. Esta preparación no implementa el MVP ni certifica la compilación.
+
+La Etapa 1 debe funcionar con datos locales, sin Firebase ni API. La conexión externa corresponde a la Etapa 2.
 
 ## Problema que aborda
 
@@ -24,16 +26,16 @@ El proyecto busca apoyar la organización de solicitudes de soporte y ofrecer a 
 
 ## Alcance previsto del MVP
 
-| Área | Funcionalidad propuesta |
+| Área | Alcance local por desarrollar |
 | --- | --- |
-| Acceso | Interfaces de inicio de sesión, registro y recuperación de contraseña. |
-| Administración | Panel con información general y consulta de usuarios y tickets. |
-| Clientes | Panel para consultar y registrar solicitudes de soporte. |
-| Tickets | Formulario de registro y consulta del seguimiento. |
-| Cuenta | Interfaces de configuración y cambio de contraseña. |
-| Navegación | Recorrido entre pantallas y adaptación de la interfaz al espacio disponible. |
+| Entrada | Onboarding y perfil/acceso de demostración con validaciones. |
+| Panel | Indicadores calculados desde los tickets locales. |
+| Tickets | Listado, búsqueda y filtros, alta y cambio de estado. |
+| Detalle | Pantalla que reciba el identificador del ticket como argumento. |
+| Datos | Model, Repository local y estado compartido con Provider. |
+| Diseño | Tema global, componentes reutilizables y assets propios. |
 
-Esta tabla describe el alcance previsto. La implementación de cada función se verificará cuando se incorpore y revise el código de la beta.
+Esta tabla es el alcance acordado, no una lista de funciones terminadas. El estado y las responsabilidades se detallan en [Plan de Etapa 1](docs/PLAN_ETAPA1.md).
 
 ## Tecnologías
 
@@ -41,13 +43,13 @@ Esta tabla describe el alcance previsto. La implementación de cada función se 
 - **Visual Studio Code:** entorno de trabajo.
 - **Git y GitHub:** control de versiones y colaboración.
 
-Se propone conservar **PHP y MySQL** como backend e integrar Flutter mediante una API. Esta conexión aún está pendiente; Flutter no debe conectarse directamente a MySQL ni incluir credenciales de la base de datos.
+Esta entrega utiliza datos locales. El proyecto PHP/MySQL es una referencia, no un requisito de ejecución. La rúbrica prevé conectar Firebase en la Etapa 2 sustituyendo el Repository.
 
 ## Ejecución local
 
-Los siguientes pasos aplicarán **cuando el código Flutter esté disponible en el repositorio**.
+Los siguientes pasos ejecutan la beta web, pendiente de verificación en las laptops del equipo.
 
-Se requiere Flutter SDK configurado, Git y un navegador compatible. Para trabajar desde VS Code, se recomiendan las extensiones Flutter y Dart.
+Se requiere Flutter >=3.27 con Dart >=3.6, Git y un navegador compatible. El mínimo corresponde al uso existente de `Color.withValues`. Los tres deben acordar la misma versión del SDK. Para VS Code, instala las extensiones Flutter y Dart.
 
 ```bash
 git clone https://github.com/anyelohm117/KoLineTelecom-Flutter.git
@@ -63,19 +65,32 @@ El comando de Edge está pensado para Windows. Para consultar los dispositivos d
 flutter devices
 ```
 
-Ejecuta los comandos de Flutter desde la carpeta que contiene `pubspec.yaml`. Si la beta no incluye las carpetas de plataforma, será necesario generarlas antes de ejecutarla.
+Ejecuta los comandos desde la carpeta que contiene `pubspec.yaml`. La entrada web está incluida; no hace falta ejecutar `flutter create .` para Edge. Android todavía debe generarse y verificarse antes del APK: consulta [CONTRIBUTING.md](CONTRIBUTING.md). El primer `flutter pub get` genera `pubspec.lock`, que debe subirse después de acordar el SDK.
 
-## Próximos pasos
+**Validación pendiente:** no se ejecutaron Flutter ni compilación en el entorno que preparó esta base. Registra en tu laptop el resultado de `flutter analyze` y de ejecutar el recorrido.
 
-- Incorporar el código fuente de la beta y sus recursos.
-- Verificar la compilación, la navegación y el diseño adaptable.
-- Añadir el documento de definición y los wireframes.
-- Definir los contratos de la API y los permisos de cada rol.
-- Implementar y probar la autenticación y la gestión persistente de tickets.
+## Próximos pasos de Etapa 1
+
+- Confirmar la ruta: cliente real o problemática social.
+- Separar las pantallas y preparar Model, Repository y Provider siguiendo Vivero+.
+- Completar listado, detalle con argumentos, alta y seguimiento de tickets.
+- Completar entrada, assets, validaciones y pruebas.
+- Revisar definición y wireframes; redactar documentación final del equipo.
+- Preparar APK o video y demo de 5 a 7 minutos.
+
+## Backlog de Etapa 2
+
+- Firebase y persistencia externa mediante reemplazo del Repository.
+- Autenticación y permisos reales.
+- Sincronización entre usuarios y dispositivos.
+- Gestión de cuentas y recuperación de contraseña.
+- Despliegue y mejoras derivadas de la validación.
 
 ## Colaboración
 
-Para proponer cambios, trabaja en una rama propia y abre un pull request hacia `main`, indicando qué modificaste y cómo lo comprobaste.
+Consulta [la guía de colaboración](CONTRIBUTING.md). Cada integrante desarrolla y prueba su función en una rama y abre un pull request hacia `main`. Las tareas están en [el plan](docs/PLAN_ETAPA1.md); las ramas se crean al empezar cada función. No hay avances atribuidos a Vielka o Deyla en esta preparación.
+
+La procedencia de la beta y el apoyo de IA se registran en [AI_LOG.md](AI_LOG.md). El equipo debe revisar con el docente su reutilización y redactar su documentación final conforme a la rúbrica.
 
 Evita subir contraseñas, tokens, archivos `.env`, datos reales de clientes o archivos generados de compilación. Conserva el `.gitignore` del proyecto Flutter.
 
@@ -85,3 +100,4 @@ Evita subir contraseñas, tokens, archivos `.env`, datos reales de clientes o ar
 [anyelohm117](https://github.com/anyelohm117)
 
 Proyecto académico de Ingeniería en Tecnologías de la Información, Universidad Politécnica Metropolitana de Hidalgo.
+

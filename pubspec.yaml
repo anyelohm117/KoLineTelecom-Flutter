@@ -1,0 +1,12 @@
+name: koline_telecom
+description: Vista navegable Flutter de KoLine Telecom (demostracion sin backend).
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+  flutter: '>=3.27.0'
+dependencies:
+  flutter:
+    sdk: flutter
+flutter:
+  uses-material-design: true
