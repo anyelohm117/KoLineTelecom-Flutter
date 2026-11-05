@@ -44,3 +44,23 @@ y correcciones. Revisé y ejecuté los cambios en mi computadora.
 
 ### Limitación
 El perfil y los tickets se guardan en memoria durante la sesión.
+
+
+## Integración de consulta de tickets — Anyelo
+
+### Cambios realizados
+Integré el módulo inicial de Vielka al panel principal utilizando
+el Provider compartido. Adapté la búsqueda y los filtros al panel,
+y ajusté las tarjetas y el detalle al diseño de KoLine.
+
+### Apoyo recibido
+ChatGPT revisó el código y proporcionó archivos completos
+para la integración y los ajustes visuales.
+
+### Comprobación
+Se probaron búsqueda, filtros, navegación al detalle y cambio
+de estado con tickets creados desde la aplicación principal.
+El perfil y el saludo personalizado continúan funcionando.
+
+### Limitación
+Los datos se conservan en memoria durante la sesión.

@@ -5,12 +5,13 @@ import '../../core/navigation/app_navigation.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/widgets/accent_button.dart';
 import '../../core/widgets/backdrop.dart';
-import '../../models/ticket.dart';
 import '../../providers/ticket_provider.dart';
 import '../acceso/password_page.dart';
 import '../perfil/perfil_controller.dart';
 import '../perfil/perfil_screen.dart';
 import '../tickets/ticket_form_page.dart';
+
+import '../consulta_tickets/tickets_screen.dart';
 
 class HomePage extends StatefulWidget {
   final bool admin;
@@ -182,12 +183,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  String _nombreEstado(EstadoTicket estado) => switch (estado) {
-        EstadoTicket.abierto => 'Abierto',
-        EstadoTicket.enProceso => 'En proceso',
-        EstadoTicket.resuelto => 'Resuelto',
-      };
-
   Widget _content(
     TicketProvider estadoTickets,
     String? nombre,
@@ -249,78 +244,9 @@ class _HomePageState extends State<HomePage> {
     }
 
     // Tickets locales y cambio de estado.
+    // Consulta, búsqueda, filtros y detalle de Vielka.
     if (selected == 2) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const _Heading(
-            'Tickets',
-            'Registros locales de esta sesión',
-          ),
-          const SizedBox(height: 18),
-          if (estadoTickets.cargando)
-            const CircularProgressIndicator()
-          else if (estadoTickets.error != null)
-            Text(estadoTickets.error!)
-          else if (estadoTickets.tickets.isEmpty)
-            const Text('Todavía no hay tickets registrados.')
-          else
-            for (final ticket in estadoTickets.tickets)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: _Card(
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.confirmation_number,
-                      color: cyan,
-                    ),
-                    title: Text(ticket.asunto),
-                    subtitle: Text(
-                      '${ticket.folio}\n'
-                      '${ticket.cliente} • '
-                      '${_nombreEstado(ticket.estado)}',
-                    ),
-                    isThreeLine: true,
-                    trailing: PopupMenuButton<EstadoTicket>(
-                      tooltip: 'Cambiar estado',
-                      enabled: !estadoTickets.cargando,
-                      initialValue: ticket.estado,
-                      itemBuilder: (_) => [
-                        for (final estado in EstadoTicket.values)
-                          CheckedPopupMenuItem<EstadoTicket>(
-                            value: estado,
-                            checked: estado == ticket.estado,
-                            enabled: estado != ticket.estado,
-                            child: Text(_nombreEstado(estado)),
-                          ),
-                      ],
-                      onSelected: (nuevoEstado) async {
-                        final provider = context.read<TicketProvider>();
-
-                        final guardado = await provider.cambiarEstado(
-                          ticket.id,
-                          nuevoEstado,
-                        );
-
-                        if (!mounted) return;
-
-                        if (!guardado) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                provider.error ??
-                                    'No se pudo cambiar el estado.',
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ),
-              ),
-        ],
-      );
+      return const TicketsScreen(embedded: true);
     }
 
     // Usuarios de demostración.
