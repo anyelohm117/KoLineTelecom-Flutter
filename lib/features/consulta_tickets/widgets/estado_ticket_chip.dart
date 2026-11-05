@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/ticket.dart';
+import '../../../../models/ticket.dart';
 
 /// Componente visual reutilizable para mostrar el estado de un ticket
 class EstadoTicketChip extends StatelessWidget {

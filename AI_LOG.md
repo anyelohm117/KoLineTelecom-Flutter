@@ -63,4 +63,4 @@ de estado con tickets creados desde la aplicación principal.
 El perfil y el saludo personalizado continúan funcionando.
 
 ### Limitación
-Los datos se conservan en memoria durante la sesión.q
+Los datos se conservan en memoria durante la sesión.

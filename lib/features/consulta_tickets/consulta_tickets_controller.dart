@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../../models/ticket.dart';
+import '../../../models/ticket.dart';
 
 /// Controlador para gestionar los filtros de búsqueda y estado en la pantalla de tickets.
 class ConsultaTicketsController extends ChangeNotifier {
