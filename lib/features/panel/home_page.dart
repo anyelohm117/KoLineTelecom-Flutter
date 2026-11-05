@@ -8,6 +8,8 @@ import '../../core/widgets/backdrop.dart';
 import '../../models/ticket.dart';
 import '../../providers/ticket_provider.dart';
 import '../acceso/password_page.dart';
+import '../perfil/perfil_controller.dart';
+import '../perfil/perfil_screen.dart';
 import '../tickets/ticket_form_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,8 +35,19 @@ class _HomePageState extends State<HomePage> {
     (Icons.settings_outlined, 'Configuración'),
   ];
 
+  void _abrirPerfil() {
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (routeContext) => PerfilScreen(
+          onGuardado: () => Navigator.of(routeContext).pop(),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final perfil = context.watch<PerfilController>().perfil;
     final estadoTickets = context.watch<TicketProvider>();
 
     return Scaffold(
@@ -53,21 +66,32 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           PopupMenuButton<String>(
+            tooltip: 'Mi cuenta',
             icon: const Icon(Icons.account_circle_outlined),
             onSelected: (valor) {
-              if (valor == 'salir') {
-                Navigator.popUntil(context, (ruta) => ruta.isFirst);
-              }
-
-              if (valor == 'clave') {
-                go(context, const PasswordPage());
-              }
-
-              if (valor == 'rol') {
-                setState(() => admin = !admin);
+              switch (valor) {
+                case 'perfil':
+                  _abrirPerfil();
+                  break;
+                case 'rol':
+                  setState(() => admin = !admin);
+                  break;
+                case 'clave':
+                  go(context, const PasswordPage());
+                  break;
+                case 'salir':
+                  Navigator.popUntil(
+                    context,
+                    (ruta) => ruta.isFirst,
+                  );
+                  break;
               }
             },
             itemBuilder: (_) => [
+              const PopupMenuItem(
+                value: 'perfil',
+                child: Text('Mi perfil'),
+              ),
               PopupMenuItem(
                 value: 'rol',
                 child: Text(
@@ -93,16 +117,19 @@ class _HomePageState extends State<HomePage> {
               if (size.maxWidth > 750)
                 SizedBox(
                   width: 230,
-                  child: Container(
+                  child: Material(
                     color: panel,
-                    child: Column(
+                    child: ListView(
+                      padding: EdgeInsets.zero,
                       children: [
                         const SizedBox(height: 25),
-                        Text(
-                          admin ? 'ADMINISTRACIÓN' : 'PORTAL CLIENTE',
-                          style: const TextStyle(
-                            color: cyan,
-                            fontWeight: FontWeight.bold,
+                        Center(
+                          child: Text(
+                            admin ? 'ADMINISTRACIÓN' : 'PORTAL CLIENTE',
+                            style: const TextStyle(
+                              color: cyan,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 22),
@@ -112,9 +139,7 @@ class _HomePageState extends State<HomePage> {
                             selectedColor: cyan,
                             leading: Icon(items[i].$1),
                             title: Text(items[i].$2),
-                            onTap: () {
-                              setState(() => selected = i);
-                            },
+                            onTap: () => setState(() => selected = i),
                           ),
                       ],
                     ),
@@ -125,10 +150,12 @@ class _HomePageState extends State<HomePage> {
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(25),
                     child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: 1100,
+                      constraints: const BoxConstraints(maxWidth: 1100),
+                      child: _content(
+                        estadoTickets,
+                        perfil?.nombre,
+                        perfil?.correo,
                       ),
-                      child: _content(estadoTickets),
                     ),
                   ),
                 ),
@@ -161,35 +188,58 @@ class _HomePageState extends State<HomePage> {
         EstadoTicket.resuelto => 'Resuelto',
       };
 
-  Widget _content(TicketProvider estadoTickets) {
-    // Configuración de demostración.
+  Widget _content(
+    TicketProvider estadoTickets,
+    String? nombre,
+    String? correo,
+  ) {
+    // Configuración conectada al perfil local.
     if (selected == 3) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const _Heading(
             'Configuración',
-            'Preferencias de usuario',
+            'Tu perfil de esta sesión',
           ),
           const SizedBox(height: 15),
           _Card(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Nombre visible',
-                  ),
-                ),
-                const SizedBox(height: 15),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Correo',
-                  ),
+                const Icon(
+                  Icons.account_circle_outlined,
+                  size: 64,
+                  color: cyan,
                 ),
                 const SizedBox(height: 20),
+                Text(
+                  nombre ?? 'Sin perfil registrado',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  correo ?? 'Añade tu nombre y correo.',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white70),
+                ),
+                const SizedBox(height: 24),
                 AccentButton(
-                  label: 'Guardar cambios',
-                  onPressed: () => notice(context),
+                  label: 'Editar perfil',
+                  onPressed: _abrirPerfil,
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Los datos se conservan durante esta sesión.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white54,
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ),
@@ -314,14 +364,14 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    // Resumen general.
+    // Resumen con saludo personalizado.
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _Heading(
-          'Bienvenido al panel '
-          '${admin ? 'administrativo' : 'de cliente'}',
-          'Visión general de KoLine Telecom',
+          nombre == null ? 'Bienvenido a KoLine' : 'Hola, $nombre',
+          'Panel ${admin ? 'administrativo' : 'de cliente'}'
+          ' • KoLine Telecom',
         ),
         const SizedBox(height: 10),
         const Text(
@@ -381,23 +431,17 @@ class _HomePageState extends State<HomePage> {
                 runSpacing: 10,
                 children: [
                   OutlinedButton.icon(
-                    onPressed: () {
-                      setState(() => selected = 1);
-                    },
+                    onPressed: () => setState(() => selected = 1),
                     icon: const Icon(Icons.people_outline),
                     label: const Text('Ver usuarios'),
                   ),
                   OutlinedButton.icon(
-                    onPressed: () {
-                      setState(() => selected = 2);
-                    },
+                    onPressed: () => setState(() => selected = 2),
                     icon: const Icon(Icons.receipt_long),
                     label: const Text('Ver tickets'),
                   ),
                   OutlinedButton.icon(
-                    onPressed: () {
-                      setState(() => admin = !admin);
-                    },
+                    onPressed: () => setState(() => admin = !admin),
                     icon: const Icon(Icons.swap_horiz),
                     label: const Text('Cambiar vista de rol'),
                   ),
@@ -408,6 +452,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                     icon: const Icon(Icons.add),
                     label: const Text('Nuevo ticket'),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: _abrirPerfil,
+                    icon: const Icon(Icons.person_outline),
+                    label: const Text('Mi perfil'),
                   ),
                 ],
               ),
@@ -461,7 +510,10 @@ class _Card extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: Colors.white12),
       ),
-      child: child,
+      child: Material(
+        type: MaterialType.transparency,
+        child: child,
+      ),
     );
   }
 }
