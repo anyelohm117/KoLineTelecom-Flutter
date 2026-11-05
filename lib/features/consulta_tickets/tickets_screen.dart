@@ -149,11 +149,13 @@ class _TicketsScreenState extends State<TicketsScreen> {
                 return ListenableBuilder(
                   listenable: _controller,
                   builder: (context, _) {
-                    final ticketsFiltrados = _controller.filtrar(provider.tickets);
+                    final ticketsFiltrados =
+                        _controller.filtrar(provider.tickets);
 
                     if (ticketsFiltrados.isEmpty) {
                       return const Center(
-                        child: Text('No se encontraron tickets con los filtros aplicados.'),
+                        child: Text(
+                            'No se encontraron tickets con los filtros aplicados.'),
                       );
                     }
 

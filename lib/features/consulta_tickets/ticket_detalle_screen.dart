@@ -16,11 +16,13 @@ class TicketDetalleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<TicketProvider>();
-    final ticket = ConsultaTicketsController.buscarPorId(provider.tickets, ticketId);
+    final ticket =
+        ConsultaTicketsController.buscarPorId(provider.tickets, ticketId);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(ticket != null ? 'Detalle: ${ticket.folio}' : 'Detalle de Ticket'),
+        title: Text(
+            ticket != null ? 'Detalle: ${ticket.folio}' : 'Detalle de Ticket'),
       ),
       body: ticket == null
           ? const Center(
@@ -50,10 +52,12 @@ class TicketDetalleScreen extends StatelessWidget {
                   _CampoDetalle(titulo: 'ID', valor: ticket.id),
                   _CampoDetalle(titulo: 'Cliente', valor: ticket.cliente),
                   _CampoDetalle(titulo: 'Asunto', valor: ticket.asunto),
-                  _CampoDetalle(titulo: 'Categoría', valor: ticket.categoria.name),
+                  _CampoDetalle(
+                      titulo: 'Categoría', valor: ticket.categoria.name),
                   _CampoDetalle(
                     titulo: 'Fecha de creación',
-                    valor: ticket.fechaCreacion.toLocal().toString().split('.')[0],
+                    valor:
+                        ticket.fechaCreacion.toLocal().toString().split('.')[0],
                   ),
                   const SizedBox(height: 12),
                   const Text(
@@ -100,7 +104,8 @@ class _CampoDetalle extends StatelessWidget {
             width: 130,
             child: Text(
               '$titulo:',
-              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.grey),
             ),
           ),
           Expanded(

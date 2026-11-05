@@ -28,6 +28,7 @@ class ConsultaTicketsController extends ChangeNotifier {
     notifyListeners();
   }
 
+
   /// Método puro que aplica los filtros con lógica AND (búsqueda por folio, cliente o asunto + estado)
   List<Ticket> filtrar(List<Ticket> todos) {
     final q = _consulta.trim().toLowerCase();
